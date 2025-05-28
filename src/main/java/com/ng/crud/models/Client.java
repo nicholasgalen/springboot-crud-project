@@ -3,6 +3,7 @@ package com.ng.crud.models;
 import jakarta.persistence.*;
 import java.util.Date;
 
+// Simples modelo que é instantaneamente exportado para SQL (criando a tabela clients com as colunas abaixo) usando JPA
 @Entity
 @Table(name = "clients")
 public class Client {

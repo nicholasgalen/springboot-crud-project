@@ -1,3 +1,12 @@
+<!--
+  Esta página usa Thymeleaf, um mecanismo de template para Java/Spring que permite gerar HTML dinâmico.
+  Atributos com prefixo "th:" são processados pelo Thymeleaf no servidor antes do HTML ser enviado ao navegador.
+  Exemplos:
+    - th:object="${clientDto}": vincula o formulário a um objeto DTO do backend.
+    - th:field="*{firstName}": preenche o campo com o valor da propriedade "firstName" do objeto ligado.
+    - th:if / th:errors: usados para exibir mensagens de erro de validação.
+  O HTML gerado final não contém esses atributos, pois eles são processados no lado do servidor.
+-->
 <!doctype html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
