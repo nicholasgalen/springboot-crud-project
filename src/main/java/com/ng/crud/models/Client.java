@@ -18,7 +18,7 @@ public class Client {
     private String email;
 
     private String phone;
-    private String adress;
+    private String address;
     private String status;
     private Date createdAt;
 
@@ -70,12 +70,12 @@ public class Client {
         this.status = status;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhone() {
