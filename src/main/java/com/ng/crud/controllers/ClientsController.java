@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
+// Aqui no requestmapping declaramos que estamos navegando em clients agora, seja clients/create - clients/remove etc
 @Controller
 @RequestMapping("/clients")
 public class ClientsController {
@@ -68,6 +69,79 @@ public class ClientsController {
         client.setCreatedAt(new Date());
 
         clientRepo.save(client);
+
+        return "redirect:/clients";
+    }
+
+    @GetMapping("/edit")
+    public String editClient(Model model, @RequestParam int id) {
+        Client client = clientRepo.findById(id).orElse(null);
+        if (client == null) {
+            return "redirect:/clients";
+        }
+
+        ClientDto clientDto = new ClientDto();
+        clientDto.setFirstName(client.getFirstName());
+        clientDto.setLastName(client.getLastName());
+        clientDto.setEmail(client.getEmail());
+        clientDto.setPhone(client.getPhone());
+        clientDto.setAddress(client.getAddress());
+        clientDto.setStatus(client.getStatus());
+
+        model.addAttribute("client", client);
+        model.addAttribute("clientDto", clientDto);
+
+        return "clients/edit";
+    }
+
+    @PostMapping("/edit")
+    public String editClient(
+            Model model,
+            @RequestParam int id,
+            @Valid @ModelAttribute ClientDto clientDto,
+            BindingResult result
+    ) {
+
+        Client client = clientRepo.findById(id).orElse(null);
+        if (client == null) {
+            return "redirect:/clients";
+        }
+
+        model.addAttribute("client", client);
+
+        if(result.hasErrors()) {
+            return "clients/edit";
+        }
+
+        client.setFirstName(clientDto.getFirstName());
+        client.setLastName(clientDto.getLastName());
+        client.setEmail(clientDto.getEmail());
+        client.setPhone(clientDto.getPhone());
+        client.setAddress(clientDto.getAddress());
+        client.setStatus(clientDto.getStatus());
+
+        try{
+            clientRepo.save(client);
+        }
+        catch (Exception ex) {
+            result.addError(
+                    new FieldError("clientDto", "email", clientDto.getEmail(),
+                            false, null, null, "Email address is already used")
+            );
+
+            return "client/edit";
+        }
+
+        return "redirect:/clients";
+    }
+
+    @GetMapping("/delete")
+    public String deleteClient(@RequestParam int id){
+        Client client = clientRepo.findById(id).orElse(null);
+
+        if (client != null){
+            clientRepo.delete(client);
+        }
 
         return "redirect:/clients";
     }
